@@ -10,8 +10,8 @@ DB_CONNECTION=mysql
 DB_HOST=mysql
 DB_PORT=3306
 DB_DATABASE=laravel
-DB_USERNAME=user123
-DB_PASSWORD=secret_123
+DB_USERNAME=root
+DB_PASSWORD=super_secret_123
 
 - Search in /app/.env the DB connections
 - Replace that fragment with the element copied
