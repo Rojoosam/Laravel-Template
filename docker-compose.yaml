@@ -18,9 +18,7 @@ services:
     depends_on:
       - mysql
     command: >
-      sh -c "/usr/local/bin/setup-php-fpm.sh && composer install &&
-             php artisan migrate &&
-             php artisan serve --host=0.0.0.0 --port=9000"
+      bash -c "php artisan migrate && php-fpm"
 
   composer:
     image: composer:latest
@@ -42,6 +40,8 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     networks:
       - laravel
+    depends_on:
+      - app
 
   mysql:
     image: mysql:8.0
@@ -51,10 +51,23 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: super_secret_123
       MYSQL_DATABASE: laravel
-      MYSQL_USER: radmit
+      MYSQL_USER: user123
       MYSQL_PASSWORD: secret_123
     volumes:
       - mysql_data:/var/lib/mysql
+    networks:
+      - laravel
+    
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: laravel-phpmyadmin
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: super_secret_123
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
     networks:
       - laravel
 
